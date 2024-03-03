@@ -60,6 +60,7 @@ void scan_map(){
 
 void scan_neighbors(){
     //scan out the row and column neighbours pairs.  2. set planks as 3?
+    // write some thing new
     for(int r=0; r<row; r++){
         int first = -1, second = -1;
         for(int c=0; c<column; c++){
