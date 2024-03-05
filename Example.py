@@ -4,8 +4,8 @@ a=sys.stdin.read().split()
 
 P=list(I(range(len(a)),range(len(a[0])))) #这个是map 坐标点, 不包含islands信息
 E={p:[]for p in P}
-Q={(i,j):int(a[i][j])for i,j in P if'.'!=a[i][j]}
-F=[] #表示两岛相邻 [(x, y), (x, y)], [], ...
+Q={(i,j):int(a[i][j])for i,j in P if'.'!=a[i][j]} #Q是岛屿坐标与岛屿value
+F=[] #表示这两岛间可以建桥 [(x, y), (x, y)], [], ...
 
 #生成同行 / 同列 pairs
 for p,c in Q.items(): #p is coord (x, y), c is the islands number
@@ -17,20 +17,20 @@ for p,c in Q.items(): #p is coord (x, y), c is the islands number
             E[q]+=[e] #因为e是个list, 下面修改e形成pair导致这里也会自动更新
             if q in Q: e[1]=q;E[p]+=[e];F+=[e];break #存储 pair
             q=q[0]+i,q[1]+j
-E={x:[x for x in y if x[1]!=0]for x,y in E.items()}
-C=[E[p] for p in P if p not in Q and len(E[p])>1]
+E={x:[x for x in y if x[1]!=0]for x,y in E.items()} #两个岛之间能够形成桥的地方会带上岛pairs的value, 如果这个地方没有桥要通过则会为空
+C=[E[p] for p in P if p not in Q and len(E[p])>1] #找出找出两桥交叉的部位
 m=[]
-T=len(Q)+4*len(F)+len(C)
+T=len(Q)+4*len(F)+len(C) #这个应该表示元素总量, 但是不清楚为啥4*|F| (怀疑其中三个分别是0, 1, 2)
 s=0
 l={}
 for p,c in Q.items():
- e=E[p];u=len(e)*2
- for t in I(*((0,1,2)for x in e)):
-  if sum(t)!=c:continue
-  r=[0]*T;r[s+u]=1
-  for i,x in enumerate(t):k=s+i*2;r[k:k+2]=((1,1),(0,1),(0,0))[x]
-  m+=[r]
- l[p]=s;s+=u+1
+    e=E[p];u=len(e)*2
+    for t in I(*((0,1,2)for x in e)):
+        if sum(t)!=c:continue
+        r=[0]*T;r[s+u]=1
+        for i,x in enumerate(t):k=s+i*2;r[k:k+2]=((1,1),(0,1),(0,0))[x]
+        m+=[r]
+    l[p]=s;s+=u+1
 z=len(m)
 for e in F:
  p,q=e;r=[0]*T;c,d=l[p]+E[p].index(e)*2,l[q]+E[q].index(e)*2;t=r[:];r[c]=r[d]=1
