@@ -19,7 +19,7 @@ for p,c in Q.items(): #p is coord (x, y), c is the islands number
             q=q[0]+i,q[1]+j
 E={x:[x for x in y if x[1]!=0]for x,y in E.items()} #两个岛之间能够形成桥的地方会带上岛pairs的value, 如果这个地方没有桥要通过则会为空
 C=[E[p] for p in P if p not in Q and len(E[p])>1] #找出找出两桥交叉的部位
-m=[]
+m=[] #m is the table of all subsets 
 T=len(Q)+4*len(F)+len(C) #这个应该表示元素总量, 4F应该表示四个方向
 s=0
 l={}
@@ -46,15 +46,15 @@ for e in F:
 def I(x,d):
     y=d[x]
     while y!=x: yield y;    y=d[y]
-def A(c):
+def A(c): #selecting which columns in these rows have 1
     len[R[c]],R[len[c]]=len[c],R[c]
     for x in I(c,D):
         for y in I(x,R):U[D[y]],D[U[y]]=U[y],D[y]
-def B(c):
+def B(c): #selecting which rows in these columns have 1
     for x in I(c,U):
         for y in I(x,len):U[D[y]],D[U[y]]=y,y
     len[R[c]],R[len[c]]=c,c
-def S():
+def S(): #algorithm X / dancing
     c=R[h]
     if c==h:yield[]
     A(c)
@@ -63,28 +63,31 @@ def S():
         for t in S():yield[r[0]]+t
         for x in I(r,len):B(C[x])
     B(c)
-len,R,U,D,C={},{},{},{},{}
+len,R,U,D,C={},{},{},{},{}#left, right, up, down, col
 h=T
 len[h]=R[h]=D[h]=U[h]=h
 #似乎是一个环, 
 for c in range(T):
     R[len[h]],R[c],len[h],len[c]=c, h, c, len[h] #len 是一个从T: T-1, T-1: T-2 ... 1:0, 0:T的环, R是一个 0:1, 1:2, ... , T-1 : T, T:0的环
     U[c]=D[c]=c #U D 分别是0:0, 1:1, ... , T:T的映射
+
+#生成舞蹈链
 for i,l in enumerate(m):
     s=0
     for c in I(h,R): #就是c in range(T+1):
         if l[c]:
             r=i,c
-            D[U[c]],D[r],U[c],U[r],C[r]=r,c,r,U[c],c
-            if s==0:len[r]=R[r]=s=r
-            R[len[s]],R[r],len[s],len[r]=r,s,r,len[s]
-for s in S(): 
+            D[U[c]],D[r],U[c],U[r],C[r]=r,c,r,U[c],c #U[c] 是这列的最新的up, d是这列的最新的down
+            if s==0:len[r]=R[r]=s=r #舞蹈链的head
+            R[len[s]],R[r],len[s],len[r]=r,s,r,len[s] #s一直代表这行的最左端, r代表最右端
+#解舞蹈链并将bridge塞入, R存放的是right, len存放的是left
+for s in S(): #s 是舞蹈链的解法, 这个值似乎可以表示x算法筛选过程中山掉的某个行或者列
     b=list(map(list,a))
     for e in s:
-        if e<z:continue
+        if e<z:continue# z是sum(岛数量* 岛和周围邻居数量)
         (i,j),(x,y)=F[(e-z)//2]
         if j==y:
-            for r in range(i+1,x):b[r][j]='|H'[b[r][j]=='|']
+            for r in range(i+1,x):b[r][j]='|H'[b[r][j]=='|'] #似乎如果(r,j)位置有两次参与就是H, 一次参与就是|. 下面同样道理
         else:
             for r in range(j+1,y):b[i][r]='-='[b[i][r]=='-']
     print('\n'.join(''.join(l)for l in b).replace('.',' '))
