@@ -62,14 +62,20 @@ def B(c):
         for y in I(x,len):U[D[y]],D[U[y]]=y,y
     len[R[c]],R[len[c]]=c,c
 def S():
+    global findAnswer
     c=R[h]
-    if c==h:yield[]
+    if c==h:
+        findAnswer=True
+        yield []
+    if findAnswer:
+        return
     A(c)
     for r in I(c,D):
         # print(r, list(I(c, D)))
         for x in I(r,R):A(C[x])
         for t in S():yield[r[0]]+t
         for x in I(r,len):B(C[x])
+        # if not noAnswer: return None
     B(c)
 len,R,U,D,C={},{},{},{},{} 
 h=T
@@ -88,6 +94,7 @@ for i,l in enumerate(m):
             if s==0:len[r]=R[r]=s=r #舞蹈链的head
             R[len[s]],R[r],len[s],len[r]=r,s,r,len[s] #s一直代表这行的最左端, r代表最右端
             #解舞蹈链并将bridge塞入, R存放的是right, len存放的是left
+findAnswer = False
 s = list(S())
 b=list(map(list,a))
 for e in s[0]:
