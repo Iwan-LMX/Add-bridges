@@ -1,7 +1,6 @@
 import sys
 from itertools import product as I
 a=sys.stdin.read().split()
-
 P=list(I(range(len(a)),range(len(a[0])))) #这个是map 坐标点, 不包含islands信息
 E={p:[]for p in P}
 Q = {}
