@@ -1,4 +1,20 @@
 #!/usr/bin/python3
+"""
+Date: 2024-03-13
+Author: Iwan Li: z5433288 & Xiaxi Li: z5474897
+Description:
+How it woks:
+    This program using Dance Link X algorithm.  First, the program read the map, and enumerate all possible selection of islands pairs.  
+    Then, use constrains such as bridge lanes and cross rules to convert all possibility to subsets.  
+    After that, using X algorithm to find an answer, and print it out.
+
+Algorithms & data structures:
+    The algorithm we use is X algorithm (also know as Dancing link X algorithm), data structures here we use includes but not limited to: Dictionary, List, tuples, integer, string.
+
+Design decisions:
+    We have design two version of programs to solve the assignment, the another one is purely BFS + Backtracking.  But we found the time complexity is too high O(2^n), so we decide to find a good algorithm which can solve the question faster, after reading several papers we find X algorithm may possibly solve the question.
+    We want to encapsulate the nodes pointers in dancing table. However, we weren't sure if this algorithm is well worked or not before. And Python is different to C++, we really lack a good way to design a class which allow every nodes in the dancing table to point it's neighbors. Hence we just use several simple dictionaries (L, R, U, D, C) to indicate the nodes relation in dancing table.    
+"""
 import sys
 from itertools import product
 #----------------------------------------------------------------------#
@@ -26,6 +42,7 @@ def Dancing():
     for r in Line(c,D):
         for x in Line(r,R):DFS(C[x])
         for t in Dancing():yield[r[0]]+t
+        if findAnswer:  return
         for x in Line(r,L):Back(C[x])
     Back(c)
 

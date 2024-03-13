@@ -6,7 +6,7 @@ HASHI_PY="python hashi.py"
 BRIDGECHECK="./Win/bridgecheck.exe"
 
 # Set the numbers for your tests
-number1=10
+number1=20
 number2=20
 
 # Step 1: Generate input files with ./bridgen.exe
