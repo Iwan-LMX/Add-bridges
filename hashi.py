@@ -4,7 +4,8 @@ Date: 2024-03-13
 Author: Iwan Li: z5433288 & Xiaxi Li: z5474897
 Description:
 How it woks:
-    This program using Dance Link X algorithm.  First, the program read the map, and enumerate all possible selection of islands pairs.  
+    This program using Dance Link X algorithm, which designed by Donald Knuth.
+    First, the program read the map, and enumerate all possible selection of islands pairs.  
     Then, use constrains such as bridge lanes and cross rules to convert all possibility to subsets.  
     After that, using X algorithm to find an answer, and print it out.
 
@@ -34,7 +35,7 @@ def Back(c):
     L[R[c]], R[L[c]] = c, c
 def Dancing():
     global findAnswer
-    c=R[h]
+    c = R[h]
     if c==h:    findAnswer=True;    yield []
     if findAnswer:  return
 
