@@ -7,7 +7,7 @@ How it woks:
     This program using Dance Link X algorithm, which designed by Donald Knuth.
     First, the program read the map, and enumerate all possible selection of islands pairs.  
     Then, use constrains such as bridge lanes and cross rules to convert all possibility to subsets.  
-    After that, using X algorithm to find an answer, and print it out.
+    After that, the question has been converted to exact cover problem.  Using X algorithm to find an answer, and print it out.
 
 Algorithms & data structures:
     The algorithm we use is X algorithm (also know as Dancing link X algorithm), data structures here we use includes but not limited to: Dictionary, List, tuples, integer, string.
